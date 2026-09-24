@@ -1,0 +1,689 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		03FBECB83065C3AC0086C276 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FBECB73065C3AC0086C276 /* AppDelegate.swift */; };
+		03FBECBC3065C3AC0086C276 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECBA3065C3AC0086C276 /* Main.html */; };
+		03FBECBE3065C3AC0086C276 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECBD3065C3AC0086C276 /* Icon.png */; };
+		03FBECC03065C3AC0086C276 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECBF3065C3AC0086C276 /* Style.css */; };
+		03FBECC23065C3AC0086C276 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECC13065C3AC0086C276 /* Script.js */; };
+		03FBECC43065C3AC0086C276 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FBECC33065C3AC0086C276 /* ViewController.swift */; };
+		03FBECC73065C3AC0086C276 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECC53065C3AC0086C276 /* Main.storyboard */; };
+		03FBECC93065C3AD0086C276 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECC83065C3AD0086C276 /* Assets.xcassets */; };
+		03FBECD03065C3AD0086C276 /* Hermes Browser Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 03FBECCF3065C3AD0086C276 /* Hermes Browser Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		03FBECD53065C3AD0086C276 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 03FBECD43065C3AD0086C276 /* SafariWebExtensionHandler.swift */; };
+		03FBECF93065C3AD0086C276 /* build-info.json in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE13065C3AD0086C276 /* build-info.json */; };
+		03FBECFA3065C3AD0086C276 /* voice-dictation.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE23065C3AD0086C276 /* voice-dictation.js */; };
+		03FBECFB3065C3AD0086C276 /* request-permissions.html in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE33065C3AD0086C276 /* request-permissions.html */; };
+		03FBECFC3065C3AD0086C276 /* app-parity.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE43065C3AD0086C276 /* app-parity.css */; };
+		03FBECFD3065C3AD0086C276 /* sidepanel.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE53065C3AD0086C276 /* sidepanel.js */; };
+		03FBECFE3065C3AD0086C276 /* fulltab-themes.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE63065C3AD0086C276 /* fulltab-themes.css */; };
+		03FBECFF3065C3AD0086C276 /* background.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE73065C3AD0086C276 /* background.js */; };
+		03FBED003065C3AD0086C276 /* sidepanel.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE83065C3AD0086C276 /* sidepanel.css */; };
+		03FBED013065C3AD0086C276 /* app.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECE93065C3AD0086C276 /* app.css */; };
+		03FBED023065C3AD0086C276 /* sidepanel-themes.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECEA3065C3AD0086C276 /* sidepanel-themes.css */; };
+		03FBED033065C3AD0086C276 /* sidepanel-preview.html in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECEB3065C3AD0086C276 /* sidepanel-preview.html */; };
+		03FBED043065C3AD0086C276 /* context-menu-editor.css in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECEC3065C3AD0086C276 /* context-menu-editor.css */; };
+		03FBED053065C3AD0086C276 /* request-permissions.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECED3065C3AD0086C276 /* request-permissions.js */; };
+		03FBED063065C3AD0086C276 /* content-inline-helper.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECEE3065C3AD0086C276 /* content-inline-helper.js */; };
+		03FBED073065C3AD0086C276 /* content-extractor.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECEF3065C3AD0086C276 /* content-extractor.js */; };
+		03FBED083065C3AD0086C276 /* voice-dictation.html in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF03065C3AD0086C276 /* voice-dictation.html */; };
+		03FBED093065C3AD0086C276 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF13065C3AD0086C276 /* manifest.json */; };
+		03FBED0A3065C3AD0086C276 /* lib in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF23065C3AD0086C276 /* lib */; };
+		03FBED0B3065C3AD0086C276 /* _locales in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF33065C3AD0086C276 /* _locales */; };
+		03FBED0C3065C3AD0086C276 /* content.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF43065C3AD0086C276 /* content.js */; };
+		03FBED0D3065C3AD0086C276 /* app.html in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF53065C3AD0086C276 /* app.html */; };
+		03FBED0E3065C3AD0086C276 /* sidepanel.html in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF63065C3AD0086C276 /* sidepanel.html */; };
+		03FBED0F3065C3AD0086C276 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF73065C3AD0086C276 /* assets */; };
+		03FBED103065C3AD0086C276 /* app.js in Resources */ = {isa = PBXBuildFile; fileRef = 03FBECF83065C3AD0086C276 /* app.js */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		03FBECD13065C3AD0086C276 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 03FBECAC3065C3AC0086C276 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 03FBECCE3065C3AD0086C276;
+			remoteInfo = "Hermes Browser Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		03FBECDC3065C3AD0086C276 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				03FBECD03065C3AD0086C276 /* Hermes Browser Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		03FBECB43065C3AC0086C276 /* Hermes Browser.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Hermes Browser.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03FBECB73065C3AC0086C276 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		03FBECBB3065C3AC0086C276 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		03FBECBD3065C3AC0086C276 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		03FBECBF3065C3AC0086C276 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		03FBECC13065C3AC0086C276 /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		03FBECC33065C3AC0086C276 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		03FBECC63065C3AC0086C276 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		03FBECC83065C3AD0086C276 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		03FBECCA3065C3AD0086C276 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03FBECCF3065C3AD0086C276 /* Hermes Browser Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Hermes Browser Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		03FBECD43065C3AD0086C276 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		03FBECD63065C3AD0086C276 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		03FBECE13065C3AD0086C276 /* build-info.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = "build-info.json"; path = "Resources/build-info.json"; sourceTree = "<group>"; };
+		03FBECE23065C3AD0086C276 /* voice-dictation.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "voice-dictation.js"; path = "Resources/voice-dictation.js"; sourceTree = "<group>"; };
+		03FBECE33065C3AD0086C276 /* request-permissions.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "request-permissions.html"; path = "Resources/request-permissions.html"; sourceTree = "<group>"; };
+		03FBECE43065C3AD0086C276 /* app-parity.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = "app-parity.css"; path = "Resources/app-parity.css"; sourceTree = "<group>"; };
+		03FBECE53065C3AD0086C276 /* sidepanel.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = sidepanel.js; path = Resources/sidepanel.js; sourceTree = "<group>"; };
+		03FBECE63065C3AD0086C276 /* fulltab-themes.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = "fulltab-themes.css"; path = "Resources/fulltab-themes.css"; sourceTree = "<group>"; };
+		03FBECE73065C3AD0086C276 /* background.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = background.js; path = Resources/background.js; sourceTree = "<group>"; };
+		03FBECE83065C3AD0086C276 /* sidepanel.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = sidepanel.css; path = Resources/sidepanel.css; sourceTree = "<group>"; };
+		03FBECE93065C3AD0086C276 /* app.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = app.css; path = Resources/app.css; sourceTree = "<group>"; };
+		03FBECEA3065C3AD0086C276 /* sidepanel-themes.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = "sidepanel-themes.css"; path = "Resources/sidepanel-themes.css"; sourceTree = "<group>"; };
+		03FBECEB3065C3AD0086C276 /* sidepanel-preview.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "sidepanel-preview.html"; path = "Resources/sidepanel-preview.html"; sourceTree = "<group>"; };
+		03FBECEC3065C3AD0086C276 /* context-menu-editor.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; name = "context-menu-editor.css"; path = "Resources/context-menu-editor.css"; sourceTree = "<group>"; };
+		03FBECED3065C3AD0086C276 /* request-permissions.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "request-permissions.js"; path = "Resources/request-permissions.js"; sourceTree = "<group>"; };
+		03FBECEE3065C3AD0086C276 /* content-inline-helper.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "content-inline-helper.js"; path = "Resources/content-inline-helper.js"; sourceTree = "<group>"; };
+		03FBECEF3065C3AD0086C276 /* content-extractor.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = "content-extractor.js"; path = "Resources/content-extractor.js"; sourceTree = "<group>"; };
+		03FBECF03065C3AD0086C276 /* voice-dictation.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = "voice-dictation.html"; path = "Resources/voice-dictation.html"; sourceTree = "<group>"; };
+		03FBECF13065C3AD0086C276 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = Resources/manifest.json; sourceTree = "<group>"; };
+		03FBECF23065C3AD0086C276 /* lib */ = {isa = PBXFileReference; lastKnownFileType = folder; name = lib; path = Resources/lib; sourceTree = "<group>"; };
+		03FBECF33065C3AD0086C276 /* _locales */ = {isa = PBXFileReference; lastKnownFileType = folder; name = _locales; path = Resources/_locales; sourceTree = "<group>"; };
+		03FBECF43065C3AD0086C276 /* content.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = content.js; path = Resources/content.js; sourceTree = "<group>"; };
+		03FBECF53065C3AD0086C276 /* app.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = app.html; path = Resources/app.html; sourceTree = "<group>"; };
+		03FBECF63065C3AD0086C276 /* sidepanel.html */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = sidepanel.html; path = Resources/sidepanel.html; sourceTree = "<group>"; };
+		03FBECF73065C3AD0086C276 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = Resources/assets; sourceTree = "<group>"; };
+		03FBECF83065C3AD0086C276 /* app.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; name = app.js; path = Resources/app.js; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		03FBECB13065C3AC0086C276 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03FBECCC3065C3AD0086C276 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		03FBECAB3065C3AC0086C276 = {
+			isa = PBXGroup;
+			children = (
+				03FBECB63065C3AC0086C276 /* Hermes Browser */,
+				03FBECD33065C3AD0086C276 /* Hermes Browser Extension */,
+				03FBECB53065C3AC0086C276 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		03FBECB53065C3AC0086C276 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				03FBECB43065C3AC0086C276 /* Hermes Browser.app */,
+				03FBECCF3065C3AD0086C276 /* Hermes Browser Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		03FBECB63065C3AC0086C276 /* Hermes Browser */ = {
+			isa = PBXGroup;
+			children = (
+				03FBECB73065C3AC0086C276 /* AppDelegate.swift */,
+				03FBECC33065C3AC0086C276 /* ViewController.swift */,
+				03FBECC53065C3AC0086C276 /* Main.storyboard */,
+				03FBECC83065C3AD0086C276 /* Assets.xcassets */,
+				03FBECCA3065C3AD0086C276 /* Info.plist */,
+				03FBECB93065C3AC0086C276 /* Resources */,
+			);
+			path = "Hermes Browser";
+			sourceTree = "<group>";
+		};
+		03FBECB93065C3AC0086C276 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				03FBECBA3065C3AC0086C276 /* Main.html */,
+				03FBECBD3065C3AC0086C276 /* Icon.png */,
+				03FBECBF3065C3AC0086C276 /* Style.css */,
+				03FBECC13065C3AC0086C276 /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		03FBECD33065C3AD0086C276 /* Hermes Browser Extension */ = {
+			isa = PBXGroup;
+			children = (
+				03FBECE03065C3AD0086C276 /* Resources */,
+				03FBECD43065C3AD0086C276 /* SafariWebExtensionHandler.swift */,
+				03FBECD63065C3AD0086C276 /* Info.plist */,
+			);
+			path = "Hermes Browser Extension";
+			sourceTree = "<group>";
+		};
+		03FBECE03065C3AD0086C276 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				03FBECE13065C3AD0086C276 /* build-info.json */,
+				03FBECE23065C3AD0086C276 /* voice-dictation.js */,
+				03FBECE33065C3AD0086C276 /* request-permissions.html */,
+				03FBECE43065C3AD0086C276 /* app-parity.css */,
+				03FBECE53065C3AD0086C276 /* sidepanel.js */,
+				03FBECE63065C3AD0086C276 /* fulltab-themes.css */,
+				03FBECE73065C3AD0086C276 /* background.js */,
+				03FBECE83065C3AD0086C276 /* sidepanel.css */,
+				03FBECE93065C3AD0086C276 /* app.css */,
+				03FBECEA3065C3AD0086C276 /* sidepanel-themes.css */,
+				03FBECEB3065C3AD0086C276 /* sidepanel-preview.html */,
+				03FBECEC3065C3AD0086C276 /* context-menu-editor.css */,
+				03FBECED3065C3AD0086C276 /* request-permissions.js */,
+				03FBECEE3065C3AD0086C276 /* content-inline-helper.js */,
+				03FBECEF3065C3AD0086C276 /* content-extractor.js */,
+				03FBECF03065C3AD0086C276 /* voice-dictation.html */,
+				03FBECF13065C3AD0086C276 /* manifest.json */,
+				03FBECF23065C3AD0086C276 /* lib */,
+				03FBECF33065C3AD0086C276 /* _locales */,
+				03FBECF43065C3AD0086C276 /* content.js */,
+				03FBECF53065C3AD0086C276 /* app.html */,
+				03FBECF63065C3AD0086C276 /* sidepanel.html */,
+				03FBECF73065C3AD0086C276 /* assets */,
+				03FBECF83065C3AD0086C276 /* app.js */,
+			);
+			name = Resources;
+			path = "Hermes Browser Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		03FBECB33065C3AC0086C276 /* Hermes Browser */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03FBECDD3065C3AD0086C276 /* Build configuration list for PBXNativeTarget "Hermes Browser" */;
+			buildPhases = (
+				03FBECB03065C3AC0086C276 /* Sources */,
+				03FBECB13065C3AC0086C276 /* Frameworks */,
+				03FBECB23065C3AC0086C276 /* Resources */,
+				03FBECDC3065C3AD0086C276 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				03FBECD23065C3AD0086C276 /* PBXTargetDependency */,
+			);
+			name = "Hermes Browser";
+			packageProductDependencies = (
+			);
+			productName = "Hermes Browser";
+			productReference = 03FBECB43065C3AC0086C276 /* Hermes Browser.app */;
+			productType = "com.apple.product-type.application";
+		};
+		03FBECCE3065C3AD0086C276 /* Hermes Browser Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 03FBECD93065C3AD0086C276 /* Build configuration list for PBXNativeTarget "Hermes Browser Extension" */;
+			buildPhases = (
+				03FBECCB3065C3AD0086C276 /* Sources */,
+				03FBECCC3065C3AD0086C276 /* Frameworks */,
+				03FBECCD3065C3AD0086C276 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Hermes Browser Extension";
+			packageProductDependencies = (
+			);
+			productName = "Hermes Browser Extension";
+			productReference = 03FBECCF3065C3AD0086C276 /* Hermes Browser Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		03FBECAC3065C3AC0086C276 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2660;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					03FBECB33065C3AC0086C276 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+					03FBECCE3065C3AD0086C276 = {
+						CreatedOnToolsVersion = 26.6;
+					};
+				};
+			};
+			buildConfigurationList = 03FBECAF3065C3AC0086C276 /* Build configuration list for PBXProject "Hermes Browser" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 03FBECAB3065C3AC0086C276;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 03FBECB53065C3AC0086C276 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				03FBECB33065C3AC0086C276 /* Hermes Browser */,
+				03FBECCE3065C3AD0086C276 /* Hermes Browser Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		03FBECB23065C3AC0086C276 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03FBECBE3065C3AC0086C276 /* Icon.png in Resources */,
+				03FBECC73065C3AC0086C276 /* Main.storyboard in Resources */,
+				03FBECC23065C3AC0086C276 /* Script.js in Resources */,
+				03FBECBC3065C3AC0086C276 /* Main.html in Resources */,
+				03FBECC93065C3AD0086C276 /* Assets.xcassets in Resources */,
+				03FBECC03065C3AC0086C276 /* Style.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03FBECCD3065C3AD0086C276 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03FBED0A3065C3AD0086C276 /* lib in Resources */,
+				03FBED013065C3AD0086C276 /* app.css in Resources */,
+				03FBED0F3065C3AD0086C276 /* assets in Resources */,
+				03FBED063065C3AD0086C276 /* content-inline-helper.js in Resources */,
+				03FBED0B3065C3AD0086C276 /* _locales in Resources */,
+				03FBED0C3065C3AD0086C276 /* content.js in Resources */,
+				03FBED0D3065C3AD0086C276 /* app.html in Resources */,
+				03FBECFE3065C3AD0086C276 /* fulltab-themes.css in Resources */,
+				03FBED053065C3AD0086C276 /* request-permissions.js in Resources */,
+				03FBED003065C3AD0086C276 /* sidepanel.css in Resources */,
+				03FBECFC3065C3AD0086C276 /* app-parity.css in Resources */,
+				03FBED033065C3AD0086C276 /* sidepanel-preview.html in Resources */,
+				03FBED073065C3AD0086C276 /* content-extractor.js in Resources */,
+				03FBED043065C3AD0086C276 /* context-menu-editor.css in Resources */,
+				03FBED083065C3AD0086C276 /* voice-dictation.html in Resources */,
+				03FBECFF3065C3AD0086C276 /* background.js in Resources */,
+				03FBECF93065C3AD0086C276 /* build-info.json in Resources */,
+				03FBECFB3065C3AD0086C276 /* request-permissions.html in Resources */,
+				03FBED103065C3AD0086C276 /* app.js in Resources */,
+				03FBED093065C3AD0086C276 /* manifest.json in Resources */,
+				03FBED0E3065C3AD0086C276 /* sidepanel.html in Resources */,
+				03FBECFD3065C3AD0086C276 /* sidepanel.js in Resources */,
+				03FBECFA3065C3AD0086C276 /* voice-dictation.js in Resources */,
+				03FBED023065C3AD0086C276 /* sidepanel-themes.css in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		03FBECB03065C3AC0086C276 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03FBECC43065C3AC0086C276 /* ViewController.swift in Sources */,
+				03FBECB83065C3AC0086C276 /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		03FBECCB3065C3AD0086C276 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				03FBECD53065C3AD0086C276 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		03FBECD23065C3AD0086C276 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 03FBECCE3065C3AD0086C276 /* Hermes Browser Extension */;
+			targetProxy = 03FBECD13065C3AD0086C276 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		03FBECBA3065C3AC0086C276 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03FBECBB3065C3AC0086C276 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		03FBECC53065C3AC0086C276 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				03FBECC63065C3AC0086C276 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		03FBECD73065C3AD0086C276 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		03FBECD83065C3AD0086C276 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 26.5;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		03FBECDA3065C3AD0086C276 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Hermes Browser Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Browser Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.abundantbeing.hermes-browser-extension.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		03FBECDB3065C3AD0086C276 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Hermes Browser Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Browser Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.abundantbeing.hermes-browser-extension.Extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		03FBECDE3065C3AD0086C276 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Hermes Browser/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Browser";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.abundantbeing.hermes-browser-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		03FBECDF3065C3AD0086C276 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Hermes Browser/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Hermes Browser";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.github.abundantbeing.hermes-browser-extension";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		03FBECAF3065C3AC0086C276 /* Build configuration list for PBXProject "Hermes Browser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03FBECD73065C3AD0086C276 /* Debug */,
+				03FBECD83065C3AD0086C276 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03FBECD93065C3AD0086C276 /* Build configuration list for PBXNativeTarget "Hermes Browser Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03FBECDA3065C3AD0086C276 /* Debug */,
+				03FBECDB3065C3AD0086C276 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		03FBECDD3065C3AD0086C276 /* Build configuration list for PBXNativeTarget "Hermes Browser" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				03FBECDE3065C3AD0086C276 /* Debug */,
+				03FBECDF3065C3AD0086C276 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 03FBECAC3065C3AC0086C276 /* Project object */;
+}
