@@ -123,7 +123,8 @@ The old full-page Hermes Web workspace is retired. The side panel is the support
 - Hermes Agent installed and working.
 - For Local or Remote API mode: Hermes Gateway/API server enabled locally or on a reachable remote machine. Hermes Cloud instead requires a signed-in HTTPS agent tab.
 - Node.js 20+.
-- Chrome, Edge, Brave, Comet, or another Chromium browser with Side Panel API support (Chrome 116+ baseline). Firefox 142+ is supported via [AMO](https://addons.mozilla.org/en-US/firefox/addon/hermes-browser-extension/), the Mozilla Add-ons listing. `npm run build:firefox` is for local/dev Firefox builds only.
+- Chrome, Edge, Brave, Comet, or another Chromium browser with Side Panel API support (Chrome 116+ baseline). Firefox 142+ is supported via [AMO](https://addons.mozilla.org/en-US/firefox/addon/hermes-browser-extension/), the Mozilla Add-ons listing. `npm run build:firefox` is for local/dev Firefox builds only. Safari on macOS is supported via a locally built host app (`npm run convert:safari` produces an Xcode project that must be archived and installed); there is no signed Safari package yet.
+- For Safari builds only: macOS with the full Xcode app — Command Line Tools alone are not enough.
 
 ## Compatibility matrix
 
@@ -132,7 +133,7 @@ The old full-page Hermes Web workspace is retired. The side panel is the support
 | Chrome / Edge / Chromium 114+ side panel | Yes | Primary public support target. |
 | Brave / Comet / Chromium forks | Best-effort | Must expose the Chromium Side Panel API and extension clipboard permissions for Copy Diagnostics. |
 | Firefox | Install from [AMO](https://addons.mozilla.org/en-US/firefox/addon/hermes-browser-extension/) (Firefox 142+) | Mozilla signs it and Firefox auto-updates from AMO. `npm run build:firefox` / `npm run sign:firefox` are maintainer/local signing, not the public install path. Chrome/Edge/Chromium remain the primary public support target. |
-| Safari | Not shipped | Browser-family diagnostics exist, but no Safari package is included. |
+| Safari | Local build via `npm run convert:safari` + Xcode Release archive (macOS) | No signed package yet. Self-signed builds need Safari → Settings → Developer → "Allow unsigned extensions", which resets on every Safari restart. The panel opens as a full tab and Hermes Control is unavailable (no `debugger` API). |
 | Local Hermes API server | Yes | Default path: `http://127.0.0.1:8642`. |
 | Hermes Cloud | Yes, Trusted Dashboard Attach | Requires an active signed-in HTTPS Hermes Cloud agent tab. Uses a single-use WebSocket ticket and enforces Chat-only context. This is not a general cookie import or background account-discovery flow. |
 | Remote API server | Yes, explicit URL/token only | Use trusted LAN/Tailscale/VPN or HTTPS reverse proxy; do not expose Hermes naked to the internet. |
@@ -151,6 +152,10 @@ The old full-page Hermes Web workspace is retired. The side panel is the support
 Hermes Browser Extension on Firefox is a chat-and-context client: pairing, the side panel, streaming replies, attachments, and page-context capture all work, but **real-tab attach ("Hermes Control") is Chromium-only**. Firefox WebExtensions have no equivalent to Chromium's `debugger` API, which live tab control requires — the Firefox package omits that permission entirely rather than shipping control that cannot run. On Firefox the panel's control card reports Control unavailable with an explanation instead of failing silently.
 
 If you need Hermes to click, type, scroll, or operate tabs on your behalf, load the extension in Chrome, Edge, Brave, or another Chromium browser.
+
+### Safari scope: chat and context only, panel opens as a full tab
+
+Hermes Browser Extension on Safari is a chat-and-context client like the Firefox build: pairing, streaming replies, attachments, page-context capture, Hermes Assist, and the ⌥H panel shortcut all work, but **real-tab attach ("Hermes Control") is Chromium-only**. Safari Web Extensions have no `debugger` API, so the Safari manifest omits it — plus `offscreen`, `sidePanel`, `downloads`, `tabGroups`, `declarativeNetRequestWithHostAccess`, and `audioCapture` — rather than shipping control that cannot run. Safari has no Side Panel API either, so the toolbar action and ⌥H focus the panel as a regular tab, the same fallback Chrome uses when `sidePanel` is unavailable.
 
 ## Quick start
 
@@ -188,6 +193,37 @@ After code updates, run `npm run build` again and click **Reload** on the Hermes
 Because this package is Mozilla-hosted on AMO, Firefox receives future signed updates through AMO automatically. No separate update manifest or manual reinstall is required.
 
 Do not sideload the GitHub source zip/tar.gz. Those are source archives, not a Firefox add-on.
+
+### 4. Install in Safari (macOS)
+
+Safari Web Extensions run inside a host app, so the Safari build produces a small Xcode wrapper containing the converted extension. Requires macOS with the full Xcode app installed.
+
+1. Generate the Xcode project:
+
+   ```bash
+   npm run convert:safari
+   ```
+
+   This builds the WebKit-compatible package at `dist/safari/`, runs `xcrun safari-web-extension-converter` into `safari/Hermes Browser/`, and fixes the host app's bundle identifier so the extension target embeds cleanly.
+
+2. Build and install the host app. Either open `safari/Hermes Browser/Hermes Browser.xcodeproj` in Xcode, choose your signing team (a self-signed certificate also works for local use), Product → Archive, and copy the exported `Hermes Browser.app` to `/Applications` — or do it from the CLI:
+
+   ```bash
+   xcodebuild -project "safari/Hermes Browser/Hermes Browser.xcodeproj" \
+     -scheme "Hermes Browser" -configuration Release \
+     -archivePath /tmp/hermes.xcarchive archive \
+     CODE_SIGN_IDENTITY="<your signing identity>" CODE_SIGN_STYLE=Manual DEVELOPMENT_TEAM=""
+   ditto "/tmp/hermes.xcarchive/Products/Applications/Hermes Browser.app" \
+     "/Applications/Hermes Browser.app"
+   ```
+
+3. Launch `Hermes Browser.app` once. Safari only lists app-embedded web extensions from a **Release archive installed at a stable path** — Debug builds and derived-data copies are not discovered.
+
+4. Open Safari → Settings → Extensions and tick the checkbox next to **Hermes Browser Extension**. The checkbox rejects synthetic clicks by design (Apple anti-automation) — it must be toggled by hand.
+
+5. Unsigned builds (self-signed certificate, shown as **(UNSIGNED)** in the pane) additionally require Safari → Settings → Developer → **Allow unsigned extensions**. This switch resets to off every time Safari restarts — re-enable it after each relaunch until the app is signed with an Apple Developer ID.
+
+6. Click the toolbar button or press ⌥H to open the Hermes panel tab, then choose Local gateway, Hermes Cloud, or Remote gateway as usual.
 
 ## Connect to Hermes
 
@@ -492,8 +528,11 @@ companion-plugin/     optional fail-soft Browser companion plugin with read-only
 scripts/
   build.mjs           copies extension/ to dist/
   build-firefox.mjs   produces the Firefox package at dist/firefox/
+  build-safari.mjs    produces the Safari package at dist/safari/ (WebKit manifest transform)
+  patch-safari-project.mjs post-converter bundle-id fix for the Xcode wrapper
   check-manifest.mjs  validates required manifest assets/permissions
   package.mjs         creates artifacts/hermes-browser-extension.tar.gz
+safari/             generated Xcode host-app project (regenerate with npm run convert:safari)
 tests/
   common.test.mjs     utility behavior tests
 ```
