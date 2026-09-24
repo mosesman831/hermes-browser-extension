@@ -53,3 +53,6 @@ docs/
 .omx/
 CLAUDE.md
 AGENTS.md
+
+# Safari converter --copy-resources output (regenerate with npm run convert:safari)
+safari/**/Resources/

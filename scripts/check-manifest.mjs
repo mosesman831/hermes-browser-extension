@@ -17,6 +17,8 @@ const sourceBuildInfoPath = path.join(root, 'extension', 'build-info.json');
 const distBuildInfoPath = path.join(root, 'dist', 'build-info.json');
 const firefoxManifestPath = path.join(root, 'dist', 'firefox', 'manifest.json');
 const firefoxBuildInfoPath = path.join(root, 'dist', 'firefox', 'build-info.json');
+const safariManifestPath = path.join(root, 'dist', 'safari', 'manifest.json');
+const safariBuildInfoPath = path.join(root, 'dist', 'safari', 'build-info.json');
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
 const rootManifest = fs.existsSync(rootManifestPath) ? JSON.parse(fs.readFileSync(rootManifestPath, 'utf8')) : null;
 const distManifest = fs.existsSync(distManifestPath) ? JSON.parse(fs.readFileSync(distManifestPath, 'utf8')) : null;
@@ -25,6 +27,8 @@ const sourceBuildInfo = fs.existsSync(sourceBuildInfoPath) ? JSON.parse(fs.readF
 const distBuildInfo = fs.existsSync(distBuildInfoPath) ? JSON.parse(fs.readFileSync(distBuildInfoPath, 'utf8')) : null;
 const firefoxManifest = fs.existsSync(firefoxManifestPath) ? JSON.parse(fs.readFileSync(firefoxManifestPath, 'utf8')) : null;
 const firefoxBuildInfo = fs.existsSync(firefoxBuildInfoPath) ? JSON.parse(fs.readFileSync(firefoxBuildInfoPath, 'utf8')) : null;
+const safariManifest = fs.existsSync(safariManifestPath) ? JSON.parse(fs.readFileSync(safariManifestPath, 'utf8')) : null;
+const safariBuildInfo = fs.existsSync(safariBuildInfoPath) ? JSON.parse(fs.readFileSync(safariBuildInfoPath, 'utf8')) : null;
 const requiredFiles = [
   manifest.background?.service_worker,
   manifest.side_panel?.default_path,
@@ -84,6 +88,36 @@ if (firefoxManifest && firefoxManifest.version !== packageJson.version) {
 if (firefoxManifest && !firefoxManifest.browser_specific_settings?.gecko?.id) {
   errors.push('Firefox manifest must include browser_specific_settings.gecko.id');
 }
+if (safariManifest && safariManifest.version !== packageJson.version) {
+  errors.push(`Safari manifest version ${safariManifest.version} must match package.json version ${packageJson.version}; run npm run build:safari`);
+}
+if (safariManifest) {
+  for (const key of ['side_panel', 'sidebar_action', 'minimum_chrome_version']) {
+    if (key in safariManifest) errors.push(`Safari manifest must not include unsupported key ${key}; run npm run build:safari`);
+  }
+  const safariPermissions = [
+    ...(safariManifest.permissions || []),
+    ...(safariManifest.optional_permissions || []),
+  ];
+  for (const permission of ['offscreen', 'sidePanel', 'debugger', 'tabGroups', 'downloads', 'declarativeNetRequestWithHostAccess', 'audioCapture']) {
+    if (safariPermissions.includes(permission)) {
+      errors.push(`Safari manifest must not request unsupported permission ${permission}; run npm run build:safari`);
+    }
+  }
+  if (!safariManifest.background?.service_worker) {
+    errors.push('Safari manifest must keep the module service worker background; run npm run build:safari');
+  }
+  const safariWar = safariManifest.web_accessible_resources || [];
+  for (const entry of safariWar) {
+    if (typeof entry !== 'string') {
+      errors.push('Safari manifest web_accessible_resources must use the flat string-array form; run npm run build:safari');
+      break;
+    }
+  }
+  if (safariManifest.commands?._execute_sidebar_action) {
+    errors.push('Safari manifest must not keep the _execute_sidebar_action command; run npm run build:safari');
+  }
+}
 if (distManifest && !distBuildInfo) {
   errors.push('dist/build-info.json missing; run npm run build so update checks can compare the loaded build commit to GitHub main');
 }
@@ -91,6 +125,7 @@ validateBuildInfo(rootBuildInfo, 'root build-info.json');
 validateBuildInfo(sourceBuildInfo, 'extension/build-info.json');
 validateBuildInfo(distBuildInfo, 'dist/build-info.json');
 validateBuildInfo(firefoxBuildInfo, 'Firefox build-info.json');
+validateBuildInfo(safariBuildInfo, 'Safari build-info.json');
 if (!manifest.permissions?.includes('sidePanel')) errors.push('sidePanel permission missing');
 if (!manifest.permissions?.includes('storage')) errors.push('storage permission missing');
 if (!manifest.permissions?.includes('debugger')) errors.push('debugger permission missing for Phase 6 Chromium control');
