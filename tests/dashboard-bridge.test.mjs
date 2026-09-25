@@ -246,6 +246,46 @@ test('findDashboardTab still returns null on a full-tab host when no dashboard t
   assert.equal(await findDashboardTab(tabsApi, 'https://host.ts.net'), null);
 });
 
+test('findDashboardTab strips the port from the tabs.query match pattern (WebKit rejects port-bearing patterns)', async () => {
+  const dashboardTab = { id: 5, url: 'https://host.ts.net:9443/dashboard', status: 'complete', discarded: false };
+  const extensionTab = { id: 1, url: 'safari-web-extension://abc/panel.html', status: 'complete', active: true, discarded: false };
+  const queries = [];
+  const tabsApi = {
+    query: async (query) => {
+      queries.push(query);
+      if (query?.active) return [extensionTab];
+      // A portless pattern matches every port on the host, so a wrong-port
+      // decoy rides along: only the exact origin (port included) may resolve.
+      return [
+        extensionTab,
+        { id: 8, url: 'https://host.ts.net:8443/decoy', status: 'complete', active: true, discarded: false },
+        dashboardTab,
+      ];
+    },
+  };
+  const tab = await findDashboardTab(tabsApi, 'https://host.ts.net:9443');
+  assert.equal(tab.id, 5);
+  assert.deepEqual(queries[0], { active: true, currentWindow: true });
+  assert.deepEqual(queries[1], { url: 'https://host.ts.net/*' });
+});
+
+test('findDashboardTab falls back to an all-tabs scan when the match pattern is not expressible', async () => {
+  const dashboardTab = { id: 5, url: 'http://127.0.0.1:9119/dashboard', status: 'complete', discarded: false };
+  const extensionTab = { id: 1, url: 'safari-web-extension://abc/panel.html', status: 'complete', active: true, discarded: false };
+  const queries = [];
+  const tabsApi = {
+    query: async (query) => {
+      queries.push(query);
+      if (query?.active) return [extensionTab];
+      if (query?.url) throw new Error('rejected match pattern');
+      return [extensionTab, dashboardTab];
+    },
+  };
+  const tab = await findDashboardTab(tabsApi, 'http://127.0.0.1:9119');
+  assert.equal(tab.id, 5);
+  assert.deepEqual(queries[queries.length - 1], {});
+});
+
 test('findDashboardTab reuses an exact remembered same-origin tab without requiring it to stay active', async () => {
   let queried = false;
   const tabsApi = {
@@ -344,6 +384,22 @@ test('mintWsTicket reuses the signed-in local Dashboard tab', async () => {
   assert.deepEqual(result, { ok: true, ticket: 'LOCAL', ttlSeconds: 30 });
 });
 
+test('mintWsTicket surfaces inject_timeout when executeScript never settles', async () => {
+  const dashboardTab = { id: 7, url: 'https://host.ts.net/dashboard', status: 'complete', discarded: false };
+  const result = await mintWsTicket({
+    tabsApi: {
+      query: async () => [dashboardTab],
+      get: async () => ({ ...dashboardTab }),
+    },
+    scriptingApi: { executeScript: () => new Promise(() => {}) },
+    baseUrl: 'https://host.ts.net',
+    mintFn: () => {},
+    injectTimeoutMs: 20,
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.reason, 'inject_timeout');
+});
+
 test('mintWsTicket discards a ticket when the selected dashboard tab navigates', async () => {
   const result = await mintWsTicket({
     tabsApi: {
@@ -412,6 +468,7 @@ test('ticketFailureHelp gives actionable copy per reason', () => {
   assert.match(ticketFailureHelp('dashboard_tab_changed'), /changed while connecting/i);
   assert.match(ticketFailureHelp('ticket_endpoint_rejected'), /reload/i);
   assert.match(ticketFailureHelp('ticket_http_400'), /reload/i);
+  assert.match(ticketFailureHelp('inject_timeout'), /allowed to run on that site/i);
 });
 
 test('dashboardProfilesUrl builds a first-party /api/profiles URL', () => {

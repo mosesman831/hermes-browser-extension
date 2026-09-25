@@ -170,6 +170,20 @@ export function isExtensionPageTab(tab) {
   }
 }
 
+// URL match patterns cannot express a port, and WebKit outright rejects a
+// pattern that contains one (`https://host:9443/*`), so the query narrows by
+// scheme + hostname only. The exact-origin check — port included — stays in
+// usableDashboardTabs.
+function dashboardTabMatchPattern(origin) {
+  try {
+    const parsed = new URL(origin);
+    if (parsed.hostname.includes(':')) return '';
+    return `${parsed.protocol}//${parsed.hostname}/*`;
+  } catch {
+    return '';
+  }
+}
+
 function usableDashboardTabs(tabs, origin, tabId = null) {
   return (tabs || []).filter(
     (tab) => tab
@@ -221,20 +235,56 @@ export async function findDashboardTab(tabsApi, origin, tabId = null) {
   const actives = (tabs || []).filter((tab) => tab?.active);
   if (!actives.length || !actives.every((tab) => isExtensionPageTab(tab))) return null;
   let candidates = [];
-  try {
-    candidates = await tabsApi.query({ url: `${origin}/*` });
-  } catch {
-    return null;
+  const pattern = dashboardTabMatchPattern(origin);
+  if (pattern) {
+    try {
+      candidates = await tabsApi.query({ url: pattern });
+    } catch {
+      candidates = [];
+    }
+  }
+  if (!candidates.length) {
+    // No expressible match pattern (IPv6, exotic host) or the query itself
+    // was rejected: scan every tab and let the exact-origin filter match.
+    try {
+      candidates = await tabsApi.query({});
+    } catch {
+      return null;
+    }
   }
   const usableElsewhere = usableDashboardTabs(candidates, origin, tabId);
   return usableElsewhere.find((tab) => tab.active) || usableElsewhere[0] || null;
+}
+
+const INJECT_TIMEOUT_MS = 15_000;
+
+// WebKit can leave scripting.executeScript's promise unsettled on pages the
+// extension may not run on, so every injection races a bounded timer instead
+// of hanging the attach flow indefinitely.
+async function executeScriptInTab(scriptingApi, { tabId, func, args, timeoutMs = INJECT_TIMEOUT_MS } = {}) {
+  const timeoutError = new Error('inject_timeout');
+  let timer;
+  try {
+    const [injection] = await Promise.race([
+      scriptingApi.executeScript({ target: { tabId }, func, args }),
+      new Promise((_, reject) => {
+        timer = setTimeout(() => reject(timeoutError), timeoutMs);
+      }),
+    ]);
+    return { ok: true, injection };
+  } catch (error) {
+    if (error === timeoutError) return { ok: false, reason: 'inject_timeout' };
+    return { ok: false, reason: 'inject_failed', detail: String(error?.message || error) };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 // Mint a fresh ws-ticket (single-use, ~30s TTL) by executing the mint in a
 // logged-in dashboard tab. Returns the mintTicketInPage result shape, plus
 // { ok:false, reason:'no_dashboard_tab', origin } when no usable tab exists so
 // the caller can tell the user to open + sign in to the dashboard.
-export async function mintWsTicket({ tabsApi, scriptingApi, baseUrl, tabId = null, mintFn = mintTicketInPage }) {
+export async function mintWsTicket({ tabsApi, scriptingApi, baseUrl, tabId = null, mintFn = mintTicketInPage, injectTimeoutMs = INJECT_TIMEOUT_MS }) {
   const origin = originOf(baseUrl);
   if (!origin) return { ok: false, reason: 'bad_base_url' };
   if (!scriptingApi?.executeScript) return { ok: false, reason: 'scripting_unavailable' };
@@ -242,16 +292,14 @@ export async function mintWsTicket({ tabsApi, scriptingApi, baseUrl, tabId = nul
   const tab = await findDashboardTab(tabsApi, origin, tabId);
   if (!tab?.id) return { ok: false, reason: 'no_dashboard_tab', origin };
 
-  let injection;
-  try {
-    [injection] = await scriptingApi.executeScript({
-      target: { tabId: tab.id },
-      func: mintFn,
-      args: [wsTicketUrl(baseUrl)],
-    });
-  } catch (error) {
-    return { ok: false, reason: 'inject_failed', detail: String(error?.message || error) };
-  }
+  const shot = await executeScriptInTab(scriptingApi, {
+    tabId: tab.id,
+    func: mintFn,
+    args: [wsTicketUrl(baseUrl)],
+    timeoutMs: injectTimeoutMs,
+  });
+  if (!shot.ok) return shot;
+  const injection = shot.injection;
   const result = injection?.result || { ok: false, reason: 'no_result' };
   if (!result.ok) return result;
 
@@ -291,6 +339,8 @@ export function ticketFailureHelp(reason = '', origin = '') {
       return 'The signed-in dashboard account changed while connecting. Confirm the intended account, then try again.';
     case 'ticket_endpoint_rejected':
       return 'The dashboard rejected the ticket request with a stale session. Hard-reload the dashboard tab (Ctrl+Shift+R), sign in again if asked, then try connecting again.';
+    case 'inject_timeout':
+      return 'The dashboard tab did not respond to the extension. Make sure the extension is allowed to run on that site (on Safari: Settings → Websites → Hermes Browser → Always Allow), hard-reload the dashboard tab, then try connecting again.';
     default:
       if (/^ticket_http_4\d\d$/.test(String(reason || ''))) {
         return 'The dashboard rejected the ticket request. Hard-reload the dashboard tab (Ctrl+Shift+R), sign in again if asked, then try connecting again.';
@@ -400,17 +450,13 @@ export async function discoverProfilesViaTab({ tabsApi, scriptingApi, baseUrl, p
   const tab = await findDashboardTab(tabsApi, origin);
   if (!tab?.id) return { ok: false, reason: 'no_dashboard_tab', origin };
 
-  let injection;
-  try {
-    [injection] = await scriptingApi.executeScript({
-      target: { tabId: tab.id },
-      func: discoverFn,
-      args: [baseUrl, profile],
-    });
-  } catch (error) {
-    return { ok: false, reason: 'inject_failed', detail: String(error?.message || error) };
-  }
-  return injection?.result || { ok: false, reason: 'no_result' };
+  const shot = await executeScriptInTab(scriptingApi, {
+    tabId: tab.id,
+    func: discoverFn,
+    args: [baseUrl, profile],
+  });
+  if (!shot.ok) return shot;
+  return shot.injection?.result || { ok: false, reason: 'no_result' };
 }
 
 // URL for the session-row PATCH the Desktop's non-active rename uses
@@ -527,17 +573,13 @@ export async function renameSessionViaTab({
   const tab = await findDashboardTab(tabsApi, origin, tabId);
   if (!tab?.id) return { ok: false, reason: 'no_dashboard_tab', origin };
 
-  let injection;
-  try {
-    [injection] = await scriptingApi.executeScript({
-      target: { tabId: tab.id },
-      func: renameFn,
-      args: [{ baseUrl, sessionId, title, profile }],
-    });
-  } catch (error) {
-    return { ok: false, reason: 'inject_failed', detail: String(error?.message || error) };
-  }
-  return injection?.result || { ok: false, reason: 'no_result' };
+  const shot = await executeScriptInTab(scriptingApi, {
+    tabId: tab.id,
+    func: renameFn,
+    args: [{ baseUrl, sessionId, title, profile }],
+  });
+  if (!shot.ok) return shot;
+  return shot.injection?.result || { ok: false, reason: 'no_result' };
 }
 
 // fetchFn-based discovery (no scripting) for unit tests and the local-dashboard
