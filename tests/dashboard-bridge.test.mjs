@@ -189,6 +189,63 @@ test('findDashboardTab requires the active loaded same-origin tab', async () => 
   ] }, 'https://host.ts.net'), null);
 });
 
+test('findDashboardTab searches other tabs when the extension page holds the active slot (full-tab host)', async () => {
+  const dashboardTab = { id: 5, url: 'https://host.ts.net/dashboard', status: 'complete', discarded: false };
+  const extensionTab = { id: 1, url: 'safari-web-extension://abc123/sidepanel.html', status: 'complete', active: true, discarded: false };
+  const queries = [];
+  const tabsApi = {
+    query: async (query) => {
+      queries.push(query);
+      if (query?.active) return [extensionTab];
+      return [extensionTab, dashboardTab];
+    },
+  };
+  const tab = await findDashboardTab(tabsApi, 'https://host.ts.net');
+  assert.equal(tab.id, 5);
+  assert.deepEqual(queries[0], { active: true, currentWindow: true });
+  assert.deepEqual(queries[1], { url: 'https://host.ts.net/*' });
+});
+
+test('findDashboardTab prefers a dashboard tab that is active in another window', async () => {
+  const extensionTab = { id: 1, url: 'chrome-extension://abc/sidepanel.html', status: 'complete', active: true, discarded: false };
+  const tabsApi = {
+    query: async (query) => {
+      if (query?.active) return [extensionTab];
+      return [
+        { id: 5, url: 'https://host.ts.net/dashboard', status: 'complete', discarded: false },
+        { id: 6, url: 'https://host.ts.net/agent', status: 'complete', active: true, discarded: false },
+      ];
+    },
+  };
+  const tab = await findDashboardTab(tabsApi, 'https://host.ts.net');
+  assert.equal(tab.id, 6);
+});
+
+test('findDashboardTab keeps the active-tab rule when a non-extension page is active', async () => {
+  const tabsApi = {
+    query: async (query) => {
+      if (query?.active) return [{ id: 9, url: 'https://unrelated.example/', status: 'complete', active: true, discarded: false }];
+      throw new Error('must not scan tabs while a normal page is active');
+    },
+  };
+  assert.equal(await findDashboardTab(tabsApi, 'https://host.ts.net'), null);
+});
+
+test('findDashboardTab still returns null on a full-tab host when no dashboard tab exists', async () => {
+  const extensionTab = { id: 1, url: 'moz-extension://abc/panel.html', status: 'complete', active: true, discarded: false };
+  const tabsApi = {
+    query: async (query) => {
+      if (query?.active) return [extensionTab];
+      return [
+        extensionTab,
+        { id: 3, url: 'https://other.example/', status: 'complete', discarded: false },
+        { id: 4, url: 'https://host.ts.net/loading', status: 'loading', discarded: false },
+      ];
+    },
+  };
+  assert.equal(await findDashboardTab(tabsApi, 'https://host.ts.net'), null);
+});
+
 test('findDashboardTab reuses an exact remembered same-origin tab without requiring it to stay active', async () => {
   let queried = false;
   const tabsApi = {

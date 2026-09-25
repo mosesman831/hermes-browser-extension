@@ -34,6 +34,56 @@ test('Cloud Preview requires the active complete non-discarded tab', async () =>
   });
 });
 
+test('Cloud Preview finds the agent tab in the background on a full-tab host', async () => {
+  const extensionTab = { id: 1, url: 'safari-web-extension://abc/sidepanel.html', status: 'complete', active: true };
+  const agentTab = {
+    id: 10,
+    windowId: 4,
+    status: 'complete',
+    discarded: false,
+    url: 'https://agent.example.test/chat',
+    title: 'My Hermes',
+  };
+  const tabsApi = {
+    query: async (query) => {
+      if (query?.currentWindow) return [extensionTab];
+      if (query?.active) return [extensionTab, { ...agentTab, active: true, windowId: 9 }];
+      return [extensionTab, agentTab];
+    },
+  };
+  const resolved = await resolveActiveCloudAgentTab({ tabsApi });
+  assert.equal(resolved.tabId, 10);
+  assert.equal(resolved.origin, 'https://agent.example.test');
+});
+
+test('Cloud Preview accepts a single unambiguous https tab on a full-tab host', async () => {
+  const extensionTab = { id: 1, url: 'chrome-extension://abc/sidepanel.html', status: 'complete', active: true };
+  const agentTab = { id: 10, windowId: 4, status: 'complete', discarded: false, url: 'https://agent.example.test' };
+  const tabsApi = {
+    query: async (query) => {
+      if (query?.currentWindow || query?.active) return [extensionTab];
+      return [extensionTab, agentTab];
+    },
+  };
+  const resolved = await resolveActiveCloudAgentTab({ tabsApi });
+  assert.equal(resolved.tabId, 10);
+});
+
+test('Cloud Preview still errors without a resolvable agent tab on a full-tab host', async () => {
+  const extensionTab = { id: 1, url: 'safari-web-extension://abc/sidepanel.html', status: 'complete', active: true };
+  const tabsApi = {
+    query: async (query) => {
+      if (query?.currentWindow || query?.active) return [extensionTab];
+      return [
+        extensionTab,
+        { id: 11, url: 'https://one.example/', status: 'complete' },
+        { id: 12, url: 'https://two.example/', status: 'complete' },
+      ];
+    },
+  };
+  await assert.rejects(() => resolveActiveCloudAgentTab({ tabsApi }), /only other open https tab|another window/);
+});
+
 test('Cloud Preview aborts when the leased tab changes origin', async () => {
   await assert.rejects(() => assertCloudAgentTabStillMatches({
     tabsApi: {

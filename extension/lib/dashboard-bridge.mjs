@@ -159,6 +159,29 @@ export async function mintTicketInPage(ticketUrl) {
   }
 }
 
+// Extension-owned pages (chrome-extension://, moz-extension://,
+// safari-web-extension://) can hold the active-tab slot on full-tab hosts.
+export function isExtensionPageTab(tab) {
+  const url = String(tab?.url || tab?.pendingUrl || '');
+  try {
+    return new URL(url).protocol.endsWith('-extension:');
+  } catch {
+    return false;
+  }
+}
+
+function usableDashboardTabs(tabs, origin, tabId = null) {
+  return (tabs || []).filter(
+    (tab) => tab
+      && tab.id != null
+      && !tab.discarded
+      && tab.status === 'complete'
+      && !tab.pendingUrl
+      && (!Number.isFinite(tabId) || tab.id === tabId)
+      && originOf(tab.url) === origin,
+  );
+}
+
 // First trust requires the dashboard to be the user's active tab. Once the
 // exact tab id and origin are approved, reconnects may reuse that explicit
 // lease without forcing the user to keep Cloud selected in every new panel.
@@ -189,16 +212,22 @@ export async function findDashboardTab(tabsApi, origin, tabId = null) {
   } catch {
     return null;
   }
-  const usable = (tabs || []).filter(
-    (tab) => tab
-      && tab.id != null
-      && !tab.discarded
-      && tab.status === 'complete'
-      && !tab.pendingUrl
-      && (!Number.isFinite(tabId) || tab.id === tabId)
-      && originOf(tab.url) === origin,
-  );
-  return usable[0] || null;
+  const usable = usableDashboardTabs(tabs, origin, tabId);
+  if (usable.length) return usable[0];
+  // On hosts where the extension owns a full tab, the dashboard can never be
+  // the active tab while the user approves trust — the extension page is.
+  // When the active tab is an extension page, search all windows for the
+  // signed-in origin instead of deadlocking on "make the dashboard active".
+  const actives = (tabs || []).filter((tab) => tab?.active);
+  if (!actives.length || !actives.every((tab) => isExtensionPageTab(tab))) return null;
+  let candidates = [];
+  try {
+    candidates = await tabsApi.query({ url: `${origin}/*` });
+  } catch {
+    return null;
+  }
+  const usableElsewhere = usableDashboardTabs(candidates, origin, tabId);
+  return usableElsewhere.find((tab) => tab.active) || usableElsewhere[0] || null;
 }
 
 // Mint a fresh ws-ticket (single-use, ~30s TTL) by executing the mint in a
