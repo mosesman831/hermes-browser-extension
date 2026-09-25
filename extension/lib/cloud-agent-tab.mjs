@@ -1,3 +1,5 @@
+import { isExtensionPageTab } from './dashboard-bridge.mjs';
+
 export class CloudAgentTabError extends Error {
   constructor(code, message, detail = {}) {
     super(message);
@@ -42,10 +44,48 @@ export function validateCloudAgentTab(tab = {}) {
   });
 }
 
+function isHttpsTab(tab) {
+  try {
+    return new URL(String(tab?.url || '')).protocol === 'https:';
+  } catch {
+    return false;
+  }
+}
+
+function usableAgentTab(tab) {
+  return Boolean(tab
+    && tab.id != null
+    && !tab.discarded
+    && tab.status === 'complete'
+    && !tab.pendingUrl
+    && isHttpsTab(tab));
+}
+
+// On full-tab hosts (Safari, browsers without a side-panel API) the extension
+// page itself is the active tab, so the signed-in agent can only sit in a
+// background tab. Prefer an agent tab that is active in another window;
+// otherwise accept a single unambiguous https candidate. Anything else leaves
+// the active-tab requirement in place and errors as before.
+async function resolveBackgroundAgentTab({ tabsApi }) {
+  const [activeElsewhere, httpsTabs] = await Promise.all([
+    tabsApi.query({ active: true }).catch(() => []),
+    tabsApi.query({ url: 'https://*/*' }).catch(() => []),
+  ]);
+  const elsewhere = (Array.isArray(activeElsewhere) ? activeElsewhere : []).filter(usableAgentTab);
+  if (elsewhere.length) return elsewhere[0];
+  const candidates = (Array.isArray(httpsTabs) ? httpsTabs : []).filter(usableAgentTab);
+  if (candidates.length === 1) return candidates[0];
+  return null;
+}
+
 export async function resolveActiveCloudAgentTab({ tabsApi } = {}) {
   if (!tabsApi?.query) throw new CloudAgentTabError('tabs_api_unavailable', 'The browser tabs API is unavailable.');
   const tabs = await tabsApi.query({ active: true, currentWindow: true });
-  return validateCloudAgentTab(Array.isArray(tabs) ? tabs[0] : null);
+  const active = Array.isArray(tabs) ? tabs[0] : null;
+  if (!isExtensionPageTab(active)) return validateCloudAgentTab(active);
+  const background = await resolveBackgroundAgentTab({ tabsApi });
+  if (background) return validateCloudAgentTab(background);
+  throw new CloudAgentTabError('missing_tab', 'Keep your signed-in Hermes Cloud agent as the only other open https tab, or leave it active in another window, then connect again.');
 }
 
 export async function assertCloudAgentTabStillMatches({ tabsApi, tabId, expectedOrigin } = {}) {
